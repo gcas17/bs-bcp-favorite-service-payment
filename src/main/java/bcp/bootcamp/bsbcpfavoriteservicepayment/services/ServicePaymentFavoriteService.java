@@ -6,6 +6,8 @@ import reactor.core.publisher.Mono;
 
 public interface ServicePaymentFavoriteService {
 
+    Mono<ServicePaymentFavorite> findById(String id);
+
     Flux<ServicePaymentFavorite> findByClientId(Integer clientId);
 
     Mono<ServicePaymentFavorite> save(ServicePaymentFavorite servicePaymentFavorite);

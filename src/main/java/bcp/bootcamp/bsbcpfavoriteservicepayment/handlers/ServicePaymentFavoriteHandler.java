@@ -5,6 +5,7 @@ import bcp.bootcamp.bsbcpfavoriteservicepayment.entities.ServicePaymentFavorite;
 import bcp.bootcamp.bsbcpfavoriteservicepayment.services.ServicePaymentFavoriteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -32,11 +33,12 @@ public class ServicePaymentFavoriteHandler {
     }
 
     public Mono<ServerResponse> deleteServicePaymentFavorite(ServerRequest request) {
-        String id = request.pathVariable("clientId");
+        String id = request.pathVariable("id");
 
-        return this.servicePaymentFavoriteService.delete(id)
-                .switchIfEmpty(Mono.error(new ServicePaymentFavoriteBaseException("No se encontró elementos")))
-                .then(ServerResponse.ok().build());
+        return this.servicePaymentFavoriteService.findById(id)
+            .switchIfEmpty(Mono.error(new ServicePaymentFavoriteBaseException(HttpStatus.NOT_FOUND, "Servicio no encontrado")))
+            .flatMap(servicePaymentFavorite -> this.servicePaymentFavoriteService.delete(servicePaymentFavorite.getId()))
+            .then(ServerResponse.ok().build());
     }
 
 }

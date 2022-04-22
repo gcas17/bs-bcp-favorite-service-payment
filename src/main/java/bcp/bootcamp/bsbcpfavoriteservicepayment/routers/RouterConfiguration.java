@@ -105,7 +105,7 @@ public class RouterConfiguration {
             RouterFunctions
                 .route(GET(""), servicePaymentFavoriteHandler::getServicePaymentFavorites)
                 .andRoute(POST("").and(contentType(APPLICATION_JSON)), servicePaymentFavoriteHandler::saveServicePaymentFavorite)
-                .andRoute(DELETE("/{id}").and(contentType(APPLICATION_JSON)), servicePaymentFavoriteHandler::deleteServicePaymentFavorite)
+                .andRoute(DELETE("/{id}"), servicePaymentFavoriteHandler::deleteServicePaymentFavorite)
         );
     }
 }

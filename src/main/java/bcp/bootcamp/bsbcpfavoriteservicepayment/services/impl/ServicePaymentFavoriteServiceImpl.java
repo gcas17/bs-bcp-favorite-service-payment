@@ -15,6 +15,11 @@ public class ServicePaymentFavoriteServiceImpl implements ServicePaymentFavorite
     private ServicePaymentFavoriteRepository servicePaymentFavoriteRepository;
 
     @Override
+    public Mono<ServicePaymentFavorite> findById(String id) {
+        return this.servicePaymentFavoriteRepository.findById(id);
+    }
+
+    @Override
     public Flux<ServicePaymentFavorite> findByClientId(Integer clientId) {
         return this.servicePaymentFavoriteRepository.findByClientId(clientId);
     }
