@@ -21,7 +21,7 @@ public class ServicePaymentFavoriteHandler {
     public Mono<ServerResponse> getServicePaymentFavorites(ServerRequest request) {
         Integer clientId = Integer.parseInt(request.queryParam("clientId").get());
         return this.servicePaymentFavoriteService.findByClientId(clientId)
-                .switchIfEmpty(Mono.error(new ServicePaymentFavoriteBaseException("No se encontró elementos")))
+                .switchIfEmpty(Mono.error(new ServicePaymentFavoriteBaseException(HttpStatus.NO_CONTENT, "No se encontró elementos")))
                 .collectList()
                 .flatMap(list -> ServerResponse.ok().body(Mono.just(list), ServicePaymentFavorite.class));
     }
@@ -36,7 +36,7 @@ public class ServicePaymentFavoriteHandler {
         String id = request.pathVariable("id");
 
         return this.servicePaymentFavoriteService.findById(id)
-            .switchIfEmpty(Mono.error(new ServicePaymentFavoriteBaseException(HttpStatus.NOT_FOUND, "Servicio no encontrado")))
+            .switchIfEmpty(Mono.error(new ServicePaymentFavoriteBaseException(HttpStatus.NOT_FOUND, "Servicio de pago no encontrado")))
             .flatMap(servicePaymentFavorite -> this.servicePaymentFavoriteService.delete(servicePaymentFavorite.getId()))
             .then(ServerResponse.ok().build());
     }

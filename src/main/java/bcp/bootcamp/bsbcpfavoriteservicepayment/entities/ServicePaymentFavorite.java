@@ -1,5 +1,6 @@
 package bcp.bootcamp.bsbcpfavoriteservicepayment.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -30,5 +31,6 @@ public class ServicePaymentFavorite {
     private String favoriteType;
 
     @Field(name = "CreationDate")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate creationDate;
 }
