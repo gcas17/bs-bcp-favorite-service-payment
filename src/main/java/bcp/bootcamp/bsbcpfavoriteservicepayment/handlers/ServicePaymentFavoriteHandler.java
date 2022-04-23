@@ -19,6 +19,10 @@ public class ServicePaymentFavoriteHandler {
     private ServicePaymentFavoriteService servicePaymentFavoriteService;
 
     public Mono<ServerResponse> getServicePaymentFavorites(ServerRequest request) {
+        if(request.queryParam("clientId").isEmpty()) {
+            return Mono.error(new ServicePaymentFavoriteBaseException(HttpStatus.BAD_REQUEST, "QueryParam: 'ClientId' es obligatorio."));
+        }
+
         Integer clientId = Integer.parseInt(request.queryParam("clientId").get());
         return this.servicePaymentFavoriteService.findByClientId(clientId)
                 .switchIfEmpty(Mono.error(new ServicePaymentFavoriteBaseException(HttpStatus.NO_CONTENT, "No se encontró elementos")))
